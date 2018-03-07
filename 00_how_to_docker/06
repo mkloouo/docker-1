@@ -1,0 +1,1 @@
+docker pull nginx && docker run --detach --hostname overlord
