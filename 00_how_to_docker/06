@@ -1,1 +1,1 @@
-docker pull nginx && docker run --detach --hostname overlord
+docker pull nginx; docker run -d --name overlord --restart=always -p=5000:80 nginx
