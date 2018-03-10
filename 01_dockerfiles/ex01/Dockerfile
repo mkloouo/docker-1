@@ -1,18 +1,13 @@
-# TeamSpeak Server
-
+# TeamSpeak3 server over Debian image
 FROM debian
 
-ENV TS_VER "3.1.1"
+ENV TS3_VERSION="3.0.13" TS3SERVER_LICENSE="accept" LANG="C.UTF-8"
 
-RUN mkdir -p /usr/share/teamspeak \
-	&& curl -SL http://dl.4players.de/ts/releases/3.1.1/teamspeak3-server_linux_amd64-$TS_VER.tar.bz2 \
-	&& tar -xJC /usr/share/teamspeak \
-	&& make -C 
+COPY config.sh /config.sh
+RUN chmod +x /config.sh \
+	&& DEBIAN_FRONTEND=noniteractive apt-get -qqy update \
+	&& apt-get -qqy install bzip2 curl --no-install-recommends
 
-
-COPY http://dl.4players.de/ts/releases/3.1.1/teamspeak3-server_linux_amd64-3.1.1.tar.bz2 /root
-
-WORKDIR /usr/share/teamspeak3
-
-CMD ["ts3server_startscript.sh"]
-
+# Expose TeamSpeak3 used ports
+EXPOSE 9987/udp 10011 30033
+ENTRYPOINT ["/config.sh"]
